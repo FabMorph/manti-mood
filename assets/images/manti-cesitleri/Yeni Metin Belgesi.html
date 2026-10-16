@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mantı Mood - Sipariş Faturası</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
+    .invoice-card { max-width: 540px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .header { background: #991b1b; color: #ffffff; padding: 24px; text-align: center; }
+    .header h1 { margin: 0; font-size: 22px; letter-spacing: 1.5px; font-weight: 800; }
+    .header p { margin: 6px 0 0; font-size: 12px; opacity: 0.9; }
+    .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-top: 10px; }
+    .content { padding: 24px; }
+    .meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 20px; font-size: 12px; line-height: 1.6; }
+    .meta-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .table th { text-align: left; font-size: 11px; text-transform: uppercase; color: #64748b; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px; }
+    .table td { padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+    .price-col { text-align: right; font-weight: 600; }
+    .total-box { margin-top: 20px; border-top: 2px dashed #cbd5e1; padding-top: 16px; }
+    .total-row { display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: #991b1b; }
+    .footer { text-align: center; font-size: 11px; color: #94a3b8; padding: 16px; background: #f8fafc; border-top: 1px solid #e2e8f0; }
+  </style>
+</head>
+<body>
+  <div class="invoice-card">
+    <div class="header">
+      <h1>MANTI MOOD</h1>
+      <p>El Açması Butik Ev Mantısı & Lezzetleri</p>
+      <div class="badge">SİPARİŞ BİLGİ & E-FATURA FORMU</div>
+    </div>
+    
+    <div class="content">
+      <div class="meta-row" style="font-weight: bold; margin-bottom: 12px;">
+        <span>Sipariş No: #ORD-20261016</span>
+        <span style="color: #64748b; font-weight: normal;">16.10.2026 14:30</span>
+      </div>
+
+      <div class="meta-box">
+        <div><strong>Alıcı:</strong> Müşteri Adı Soyadı</div>
+        <div><strong>Telefon:</strong> +90 (555) 000 00 00</div>
+        <div><strong>Teslimat Adresi:</strong> Kadıköy / Moda, Caferağa Mah. Şair Nefi Sok. No: 12/4 İstanbul</div>
+        <div><strong>Ödeme Şekli:</strong> Havale / EFT (veya Kapıda Ödeme)</div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Ürün & Çeşit</th>
+            <th style="text-align: center;">Adet</th>
+            <th class="price-col">Tutar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Klasik El Mantısı</strong><br>
+              <span style="font-size: 11px; color: #64748b;">1 Kg (Taze Dondurulmuş)</span>
+            </td>
+            <td style="text-align: center;">2</td>
+            <td class="price-col">640 ₺</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Kafkas Usulü Hıngel</strong><br>
+              <span style="font-size: 11px; color: #64748b;">1 Kg (Patatesli / Kıymalı)</span>
+            </td>
+            <td style="text-align: center;">1</td>
+            <td class="price-col">340 ₺</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="total-box">
+        <div class="total-row">
+          <span>GENEL TOPLAM:</span>
+          <span>980 ₺</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Mantı Mood butik ev lezzetlerini tercih ettiğiniz için teşekkür ederiz.<br>
+      Afiyet olsun!
+    </div>
+  </div>
+</body>
+</html>
