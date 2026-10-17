@@ -1,0 +1,8 @@
+# Mantı Mood — Arama Motoru Tarama Kuralları (robots.txt)
+# NOT: Özel alan adınızı (domain) aldığınızda aşağıdaki Sitemap adresini
+# kendi domaininizle (örn: https://mantimood.com/sitemap.xml) güncelleyin.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://mantimood.com/sitemap.xml
