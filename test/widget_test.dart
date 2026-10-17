@@ -529,47 +529,58 @@ void main() {
 
   testWidgets('Smart Hybrid Banner adapts: static for single banner, PageView carousel for multiple banners', (tester) async {
     final service = SupabaseService.instance;
-    // 1. Başlangıçta sadece varsayılan tek afiş var -> PageView YOK (statik tekil vitrin)
-    await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
-    await tester.pumpAndSettle();
-    expect(find.byType(PageView), findsNothing);
+    final initialBanners = await service.getBanners(onlyActive: false);
 
-    // 2. Yedek bir afiş ekle (isActive: false) -> Hala tek aktif var -> PageView YOK
-    await service.saveBanner(
-      id: 'test-ban-yedek',
-      title: 'Yedek Afiş',
-      subtitle: 'Depoda bekleyen afiş',
-      imageUrl: 'https://example.com/banner_yedek.jpg',
-      isActive: false,
-    );
+    try {
+      // 1. Tekil aktif afiş durumunu test et -> PageView YOK (statik tekil vitrin)
+      for (int i = 1; i < initialBanners.length; i++) {
+        await service.toggleBannerActive(initialBanners[i].id, false);
+      }
+      await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
+      await tester.pumpAndSettle();
+      expect(find.byType(PageView), findsNothing);
 
-    final activeOnly = await service.getBanners();
-    expect(activeOnly.any((b) => b.id == 'test-ban-yedek'), isFalse);
+      // 2. Yedek bir afiş ekle (isActive: false) -> Hala tek aktif var -> PageView YOK
+      await service.saveBanner(
+        id: 'test-ban-yedek',
+        title: 'Yedek Afiş',
+        subtitle: 'Depoda bekleyen afiş',
+        imageUrl: 'https://example.com/banner_yedek.jpg',
+        isActive: false,
+      );
 
-    final allBanners = await service.getBanners(onlyActive: false);
-    expect(allBanners.any((b) => b.id == 'test-ban-yedek'), isTrue);
+      final activeOnly = await service.getBanners();
+      expect(activeOnly.length, 1);
+      expect(activeOnly.any((b) => b.id == 'test-ban-yedek'), isFalse);
 
-    await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
-    await tester.pumpAndSettle();
-    expect(find.byType(PageView), findsNothing);
+      final allBanners = await service.getBanners(onlyActive: false);
+      expect(allBanners.any((b) => b.id == 'test-ban-yedek'), isTrue);
 
-    // 3. Yedek afişi yayına al (isActive: true) -> Artık 2 aktif afiş var -> Otomatik PageView karusele dönüşür
-    await service.toggleBannerActive('test-ban-yedek', true);
-    final activeNow = await service.getBanners();
-    expect(activeNow.length, greaterThanOrEqualTo(2));
+      await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
+      await tester.pumpAndSettle();
+      expect(find.byType(PageView), findsNothing);
 
-    await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
-    await tester.pumpAndSettle();
-    expect(find.byType(PageView), findsOneWidget);
+      // 3. Yedek afişi yayına al (isActive: true) -> Artık 2 aktif afiş var -> Otomatik PageView karusele dönüşür
+      await service.toggleBannerActive('test-ban-yedek', true);
+      final activeNow = await service.getBanners();
+      expect(activeNow.length, greaterThanOrEqualTo(2));
 
-    // 4. Afişi tekrar pasife / yedeğe çek -> Tekrar statik tekil vitrine döner
-    await service.toggleBannerActive('test-ban-yedek', false);
-    await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
-    await tester.pumpAndSettle();
-    expect(find.byType(PageView), findsNothing);
+      await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
+      await tester.pumpAndSettle();
+      expect(find.byType(PageView), findsOneWidget);
 
-    // Test temizliği
-    await service.deleteBanner('test-ban-yedek');
+      // 4. Afişi tekrar pasife / yedeğe çek -> Tekrar statik tekil vitrine döner
+      await service.toggleBannerActive('test-ban-yedek', false);
+      await tester.pumpWidget(MaterialApp(home: HomeScreen(key: UniqueKey())));
+      await tester.pumpAndSettle();
+      expect(find.byType(PageView), findsNothing);
+    } finally {
+      // Test temizliği ve orijinal afiş durumlarını geri yükleme
+      await service.deleteBanner('test-ban-yedek');
+      for (final b in initialBanners) {
+        await service.toggleBannerActive(b.id, b.isActive);
+      }
+    }
   });
 
   testWidgets('Banner edit dialog displays Web Görünümü and Mobil Görünümü without numbering', (tester) async {
